@@ -145,10 +145,10 @@ function moveGhosts() {
     }
 }
 
-function grick(event) {
+function clickevent(event) {
     "use strict";
-    var m_x = event.pageX - document.getElementById("game_obj").offsetLeft,
-        m_y = event.pageY - document.getElementById("game_obj").offsetTop,
+    var m_x = event.pageX - document.getElementById("main_can").offsetLeft,
+        m_y = event.pageY - document.getElementById("main_can").offsetTop,
         i;
 
     if (mode === 0) {
@@ -190,8 +190,8 @@ function grick(event) {
 
 function over(event) {
     "use strict";
-    var m_x = event.pageX - document.getElementById("game_obj").offsetLeft;
-    var m_y = event.pageY - document.getElementById("game_obj").offsetTop;
+    var m_x = event.pageX - document.getElementById("main_can").offsetLeft;
+    var m_y = event.pageY - document.getElementById("main_can").offsetTop;
 
     if (mode === 0) {
         if (m_x >= go_x && m_x <= go_x + go1Image.width && m_y >= go_y && m_y <= go_y + go1Image.height) {

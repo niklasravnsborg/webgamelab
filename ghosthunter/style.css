@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #295324;
+    font-family: sans-serif;
+    color: white;
+}
+
+#main_can {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -300px;
+}
+
+footer {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+}
