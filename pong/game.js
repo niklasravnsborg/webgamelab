@@ -1,105 +1,112 @@
-// Create the canvas
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
+var mode = 1;
 
+var ball_pos_x = 310;
+var ball_pos_y = 220;
+var ball_speed = 5;
+var ball_di_x = 1;
+var ball_di_y = 1;
 
+var img_ball_size = 20;
 
-// Game objects
-var player = new Object(),
-    ball = new Object(),
-    points = 0;
+var img_ball, img_ball_ready;
+var img_bat, img_bat_ready;
+var img_field, img_field_ready;
 
-player.speed = 256;
-player.x = 30;
-player.y = canvas.height / 2;
-
-ball.x = canvas.width / 2;
-ball.y = canvas.width / 2;
-ball.angle = 0;
-
-
-// Handle keyboard controls
-var keysDown = {};
-
-addEventListener("keydown", function(e) {
-    keysDown[e.keyCode] = true;
-}, false);
-
-addEventListener("keyup", function(e) {
-    delete keysDown[e.keyCode];
-}, false);
-
-function resetBallPosition() {
-    ball.x = canvas.width / 2;
-    ball.y = canvas.height / 2;
-}
-
-var plusx = -2,
-    plusy = +1
-
-// Update game objects
-function update(modifier) {
-    if (38 in keysDown && player.y > 10) { // Player holding up
-        player.y -= player.speed * modifier;
-    }
-    if (40 in keysDown && player.y < canvas.height - 40) { // Player holding down
-        player.y += player.speed * modifier;
+function checkCollision() {
+    "use strict";
+    
+    if (ball_pos_x - img_ball_size >= 600) {
+        return 0;
     }
     
-    ball.x += plusx;
-    ball.y += plusy;
-    
-    if ((Math.abs(ball.x - player.x) < 20) && (Math.abs(ball.y - player.y) < 30)) {
-        plusx = +2;
-        plusy = -2;
-        points++;
+    if (ball_pos_y + img_ball_size >= 480) {
+        return 1;
     }
     
-    if (ball.x == 0) {
-        resetBallPosition();
+    if (ball_pos_x <= 0) {
+        return 2;
     }
     
-    document.getElementById("points").innerHTML = points;
+    if (ball_pos_y <= 0) {
+        return 3;
+    }
 }
 
 
-
-// The main game loop
-function main() {
-    var now = Date.now();
-    var delta = now - then;
+function init() {
+    "use strict";
     
-    update(delta / 1000);
-    render();
-
-    then = now;
-
-    // Request to do this again ASAP
-    requestAnimationFrame(main);
+    var canvas_ctx = document.getElementById("canvas").getContext("2d");
+    return canvas_ctx;
 }
 
+function loadImages() {
+    "use strict";
+    
+    img_field_ready = false;
+    img_field = new Image();
+    img_field.onload = function () {
+        img_field_ready = true;
+    };
+    img_field.src = "images/field_1.png";
 
+    img_ball_ready = false;
+    img_ball = new Image();
+    img_ball.onload = function () {
+        img_ball_ready = true;
+    };
+    img_ball.src = "images/ball_1.png";
 
-// Draw everithing
-var playerImage = new Image();
-playerImage.src = "images/player.png";
+    img_bat_ready = false;
+    img_bat = new Image();
+    img_bat.onload = function () {
+        img_bat_ready = true;
+    };
+    img_bat.src = "images/bat_1.png";
+}
+
+function logic() {
+    "use strict";
+    
+    if (mode === 1) {
+        ball_pos_x += ball_di_x * ball_speed;
+        ball_pos_y += ball_di_y * ball_speed;
+        
+        var col = checkCollision();
+        
+        if (col === 0 || col === 2) {
+            ball_di_x = -ball_di_x;
+        }
+        
+        if (col === 1 || col === 3) {
+            ball_di_y = -ball_di_y;
+        }
+        
+    }
+}
 
 function render() {
-    ctx.fillStyle = "grey";
-    ctx.fillRect(0, 0, 512, 480);
+    "use strict";
     
-    ctx.fillStyle = "#5dd3c2";
-    ctx.fillRect(ball.x, ball.y, 10, 10)
-    
-    ctx.drawImage(playerImage, player.x, player.y);
+    if (mode === 1) {
+        if (img_field_ready) {
+            ctx.drawImage(img_field, 0, 0);
+        }
+        if (img_ball_ready) {
+            ctx.drawImage(img_ball, ball_pos_x, ball_pos_y);
+        }
+    }
 }
 
+function loop() {
+    "use strict";
+    
+    logic();
+    render();
+    window.setTimeout(loop, 50);
+}
 
+var ctx = init();
 
-// Cross-browser support for requestAnimationFrame
-var w = window;
-requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
-
-// Let's play this game!
-var then = Date.now();
-main();
+loadImages();
+loop();

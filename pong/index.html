@@ -2,13 +2,14 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Simple Canvas Game</title>
+        <title>Pong</title>
     </head>
 
     <body>
-        <canvas id="canvas" width="512" height="480" style="border:1px solid #c3c3c3;"></canvas>
-        <p>Points: <span id="points"></span></p>
         
+        <div id="game_obj" style="position: relative">
+            <canvas id="canvas" width="640" height="480" style="background: black; position: absolute; top: 0px; left: 0px;"></canvas>            
+        </div>        
         <script src="game.js"></script>
     </body>
 
