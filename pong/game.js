@@ -1,22 +1,41 @@
+var ctx = document.getElementById("canvas").getContext("2d");
+
 var mode = 1;       // 0 - Menü   1 - Spiel  2 - Game Over
 
-var keysDown = {};  
+var keysDown = {};
+
+// Ball - Variables
 
 var ball_state = 0, // 0 - still  1 - in Spiel
     ball_ready = 0;
 
 var ball_pos_x = 310,
     ball_pos_y = 220,
-    ball_speed = 25;
+    ball_speed = 1;
 
 var ball_di_x = 0.5,
-    ball_di_y = 1;
+    ball_di_y = 5;
 
 var img_ball_size = 20;
+
+// Bats - Variables
+var img_bat_size_x = 20,
+    img_bat_size_y = 120,
+    img_bat_offset = 25,
+    bat_speed = 5;
+
+var bat_l_pos_x = img_bat_offset,
+    bat_l_pos_y = (480 / 2) - (img_bat_size_y / 2);
+
+var bat_r_pos_x = 640 - img_bat_size_x - img_bat_offset,
+    bat_r_pos_y = (480 / 2) - (img_bat_size_y / 2);
+
+// Image - Variables
 
 var img_ball, img_ball_ready,
     img_bat, img_bat_ready,
     img_field, img_field_ready;
+
 
 function setBallState(val) {
     "use strict";
@@ -63,6 +82,32 @@ function checkCollision() {
 }
 
 
+function moveBats() {
+    "use strict";
+    
+    if (keysDown[38]) {                  // Hoch
+        if (bat_r_pos_y >= bat_speed) {
+            bat_r_pos_y -= bat_speed;
+        }
+    }
+    if (keysDown[40]) {                  // Runter
+        if (bat_r_pos_y <= 480 - img_bat_size_y - bat_speed) {
+            bat_r_pos_y += bat_speed;
+        } 
+    }
+    if (keysDown[87]) {                  // W
+        if (bat_l_pos_y >= bat_speed) {
+            bat_l_pos_y -= bat_speed;
+        }
+    }
+    if (keysDown[83]) {                  // S
+        if (bat_l_pos_y <= 480 - img_bat_size_y - bat_speed) {
+            bat_l_pos_y += bat_speed;
+        } 
+    }
+}
+
+
 
 function eventListener() {
     "use strict";
@@ -75,13 +120,6 @@ function eventListener() {
         delete keysDown[e.keyCode];
     }, false);
     
-}
-
-function init() {
-    "use strict";
-    
-    var canvas_ctx = document.getElementById("canvas").getContext("2d");
-    return canvas_ctx;
 }
 
 function loadImages() {
@@ -112,9 +150,11 @@ function loadImages() {
 function logic() {
     "use strict";
     
-    if (keysDown[13]) {
+    if (keysDown[13]) {                 // Enter
         ball_ready = 1;
     }
+    
+    moveBats();
     
     if (mode === 1) {
         
@@ -161,6 +201,11 @@ function render() {
         if (img_ball_ready) {
             ctx.drawImage(img_ball, ball_pos_x, ball_pos_y);
         }
+        if (img_bat_ready) {
+            ctx.drawImage(img_bat, bat_l_pos_x, bat_l_pos_y);
+            ctx.drawImage(img_bat, bat_r_pos_x, bat_r_pos_y);
+        }
+        
     }
 }
 
@@ -169,10 +214,8 @@ function loop() {
     
     logic();
     render();
-    window.setTimeout(loop, 50);
+    window.setTimeout(loop, 10);
 }
-
-var ctx = init();
 
 loadImages();
 eventListener();
