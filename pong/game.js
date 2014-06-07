@@ -3,8 +3,12 @@ var mode = 1;
 var ball_pos_x = 310;
 var ball_pos_y = 220;
 var ball_speed = 5;
-var ball_di_x = 1;
-var ball_di_y = 1;
+
+var rand_1 = Math.random() * 2 - 1;
+var rand_2 = Math.random() * 2 - 1;
+
+var ball_di_x = rand_1 / Math.sqrt(Math.pow(rand_1, 2) + Math.pow(rand_2, 2));
+var ball_di_y = rand_2 / Math.sqrt(Math.pow(rand_1, 2) + Math.pow(rand_2, 2));
 
 var img_ball_size = 20;
 
