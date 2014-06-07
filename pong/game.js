@@ -1,21 +1,22 @@
-var mode = 1;
+var mode = 1;       // 0 - Menü   1 - Spiel  2 - Game Over
 
-var keysDown = {};
+var keysDown = {};  
 
-var ball_state = 0; // 0 - still  1 - in Spiel
+var ball_state = 0, // 0 - still  1 - in Spiel
+    ball_ready = 0;
 
-var ball_pos_x = 310;
-var ball_pos_y = 220;
-var ball_speed = 5;
+var ball_pos_x = 310,
+    ball_pos_y = 220,
+    ball_speed = 25;
 
-var ball_di_x = 1;
-var ball_di_y = 1;
+var ball_di_x = 0.5,
+    ball_di_y = 1;
 
 var img_ball_size = 20;
 
-var img_ball, img_ball_ready;
-var img_bat, img_bat_ready;
-var img_field, img_field_ready;
+var img_ball, img_ball_ready,
+    img_bat, img_bat_ready,
+    img_field, img_field_ready;
 
 function setBallState(val) {
     "use strict";
@@ -33,11 +34,12 @@ function setBallPosition(x, y) {
 function setRandDirection() {
     "use strict";
     
-    var rand_1 = Math.random() * 2 - 1;
-    var rand_2 = Math.random() * 2 - 1;
+    var rand_1 = Math.random() * 2 - 1,
+        rand_2 = Math.random() * 2 - 1;
     
-    var ball_di_x = rand_1 / Math.sqrt(Math.pow(rand_1, 2) + Math.pow(rand_2, 2));
-    var ball_di_y = rand_2 / Math.sqrt(Math.pow(rand_1, 2) + Math.pow(rand_2, 2));
+    ball_di_x = rand_1 / Math.sqrt(Math.pow(rand_1, 2) + Math.pow(rand_2, 2));
+    ball_di_y = rand_2 / Math.sqrt(Math.pow(rand_1, 2) + Math.pow(rand_2, 2));
+    
 }
 
 function checkCollision() {
@@ -72,6 +74,7 @@ function eventListener() {
     addEventListener("keyup", function (e) {
         delete keysDown[e.keyCode];
     }, false);
+    
 }
 
 function init() {
@@ -109,19 +112,16 @@ function loadImages() {
 function logic() {
     "use strict";
     
-    
+    if (keysDown[13]) {
+        ball_ready = 1;
+    }
     
     if (mode === 1) {
         
         if (ball_state === 0) {
-        
-            setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
-            setRandDirection();
-            
+                   
             if (ball_ready) {
-                
                 setBallState(1);
-                
             }
             
         }
@@ -130,11 +130,16 @@ function logic() {
             
             ball_pos_x += ball_di_x * ball_speed;
             ball_pos_y += ball_di_y * ball_speed;
+              
 
             var col = checkCollision();
 
             if (col === 0 || col === 2) {
                 setBallState(0);
+                ball_ready = 0;
+                setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
+                setRandDirection();
+            
             }
 
             if (col === 1 || col === 3) {
@@ -170,4 +175,5 @@ function loop() {
 var ctx = init();
 
 loadImages();
+eventListener();
 loop();
