@@ -1,5 +1,9 @@
 var mode = 1;
 
+var keysDown = {};
+
+var ball_state = 0; // 0 - still  1 - in Spiel
+
 var ball_pos_x = 310;
 var ball_pos_y = 220;
 var ball_speed = 5;
@@ -12,6 +16,19 @@ var img_ball_size = 20;
 var img_ball, img_ball_ready;
 var img_bat, img_bat_ready;
 var img_field, img_field_ready;
+
+function setBallState(val) {
+    "use strict";
+    
+    ball_state = val;
+}
+
+function setBallPosition(x, y) {
+    "use strict";
+    
+    ball_pos_x = x;
+    ball_pos_y = y;
+}
 
 function setRandDirection() {
     "use strict";
@@ -43,6 +60,19 @@ function checkCollision() {
     }
 }
 
+
+
+function eventListener() {
+    "use strict";
+    
+    addEventListener("keydown", function (e) {
+        keysDown[e.keyCode] = true;
+    }, false);
+
+    addEventListener("keyup", function (e) {
+        delete keysDown[e.keyCode];
+    }, false);
+}
 
 function init() {
     "use strict";
@@ -79,18 +109,38 @@ function loadImages() {
 function logic() {
     "use strict";
     
+    
+    
     if (mode === 1) {
-        ball_pos_x += ball_di_x * ball_speed;
-        ball_pos_y += ball_di_y * ball_speed;
         
-        var col = checkCollision();
+        if (ball_state === 0) {
         
-        if (col === 0 || col === 2) {
-            ball_di_x = -ball_di_x;
+            setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
+            setRandDirection();
+            
+            if (ball_ready) {
+                
+                setBallState(1);
+                
+            }
+            
         }
         
-        if (col === 1 || col === 3) {
-            ball_di_y = -ball_di_y;
+        if (ball_state === 1) {
+            
+            ball_pos_x += ball_di_x * ball_speed;
+            ball_pos_y += ball_di_y * ball_speed;
+
+            var col = checkCollision();
+
+            if (col === 0 || col === 2) {
+                setBallState(0);
+            }
+
+            if (col === 1 || col === 3) {
+                ball_di_y = -ball_di_y;
+            }
+        
         }
         
     }
