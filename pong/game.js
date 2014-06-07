@@ -16,7 +16,8 @@ var ball_pos_x = 310,
 var ball_di_x = 0.5,
     ball_di_y = 5;
 
-var img_ball_size = 20;
+var img_ball_size = 20,
+    img_ball_offset = 20;
 
 // Bats - Variables
 var img_bat_size_x = 20,
@@ -68,7 +69,7 @@ function checkCollision() {
         return 0;
     }
     
-    if (ball_pos_y + img_ball_size >= 480) {
+    if (ball_pos_y + img_ball_size + img_ball_offset>= 480) {
         return 1;
     }
     
@@ -76,7 +77,7 @@ function checkCollision() {
         return 2;
     }
     
-    if (ball_pos_y <= 0) {
+    if (ball_pos_y - img_ball_offset <= 0) {
         return 3;
     }
 }
