@@ -81,6 +81,28 @@ function checkCollision() {
     }
 }
 
+function moveBall() {
+    "use strict";
+    
+    ball_pos_x += ball_di_x * ball_speed;
+    ball_pos_y += ball_di_y * ball_speed;
+
+
+    var col = checkCollision();
+
+    if (col === 0 || col === 2) {
+        setBallState(0);
+        ball_ready = 0;
+        setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
+        setRandDirection();
+
+    }
+
+    if (col === 1 || col === 3) {
+        ball_di_y = -ball_di_y;
+    }
+}
+
 
 function moveBats() {
     "use strict";
@@ -168,23 +190,7 @@ function logic() {
         
         if (ball_state === 1) {
             
-            ball_pos_x += ball_di_x * ball_speed;
-            ball_pos_y += ball_di_y * ball_speed;
-              
-
-            var col = checkCollision();
-
-            if (col === 0 || col === 2) {
-                setBallState(0);
-                ball_ready = 0;
-                setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
-                setRandDirection();
-            
-            }
-
-            if (col === 1 || col === 3) {
-                ball_di_y = -ball_di_y;
-            }
+            moveBall(); 
         
         }
         
