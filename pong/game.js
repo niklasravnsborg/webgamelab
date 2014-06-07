@@ -11,10 +11,10 @@ var ball_state = 0, // 0 - still  1 - in Spiel
 
 var ball_pos_x = 310,
     ball_pos_y = 220,
-    ball_speed = 1;
+    ball_speed = 4;
 
-var ball_di_x = 0.5,
-    ball_di_y = 5;
+var ball_di_x = 0,
+    ball_di_y = 0;
 
 var img_ball_size = 20,
     img_ball_offset = 20;
@@ -30,6 +30,8 @@ var bat_l_pos_x = img_bat_offset,
 
 var bat_r_pos_x = 640 - img_bat_size_x - img_bat_offset,
     bat_r_pos_y = (480 / 2) - (img_bat_size_y / 2);
+
+// Player - Variables
 
 // Image - Variables
 
@@ -65,21 +67,36 @@ function setRandDirection() {
 function checkCollision() {
     "use strict";
     
-    if (ball_pos_x - img_ball_size >= 600) {
-        return 0;
+    // Walls
+    
+    if (ball_pos_x - img_ball_size >= 600) {                
+        return 0;       // Wall right
     }
     
     if (ball_pos_y + img_ball_size + img_ball_offset>= 480) {
-        return 1;
+        return 1;       // Wall bottom
     }
     
     if (ball_pos_x <= 0) {
-        return 2;
+        return 2;       // Wall left
     }
     
     if (ball_pos_y - img_ball_offset <= 0) {
-        return 3;
+        return 3;       // Wall top
     }
+    
+    // Bats
+    
+    if (ball_pos_x + img_ball_size >= bat_r_pos_x &&            
+        ball_pos_y >= bat_r_pos_y &&
+        ball_pos_y <= bat_r_pos_y + img_bat_size_y) {
+        return 4;       // Bat right
+    }
+    if (ball_pos_x <= bat_l_pos_x + img_bat_size_x &&
+        ball_pos_y >= bat_l_pos_y &&
+        ball_pos_y <= bat_l_pos_y + img_bat_size_y) {
+        return 5;       // Bat left
+    } 
 }
 
 function moveBall() {
@@ -96,11 +113,14 @@ function moveBall() {
         ball_ready = 0;
         setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
         setRandDirection();
-
     }
 
     if (col === 1 || col === 3) {
         ball_di_y = -ball_di_y;
+    }
+    
+    if (col === 4 || col === 5) {
+        ball_di_x = -ball_di_x;   
     }
 }
 
@@ -226,4 +246,5 @@ function loop() {
 
 loadImages();
 eventListener();
+setRandDirection();
 loop();
