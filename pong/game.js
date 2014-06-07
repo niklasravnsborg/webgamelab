@@ -86,22 +86,22 @@ function moveBats() {
     "use strict";
     
     if (keysDown[38]) {                  // Hoch
-        if (bat_r_pos_y >= bat_speed) {
+        if (bat_r_pos_y >= bat_speed + img_bat_offset) {
             bat_r_pos_y -= bat_speed;
         }
     }
     if (keysDown[40]) {                  // Runter
-        if (bat_r_pos_y <= 480 - img_bat_size_y - bat_speed) {
+        if (bat_r_pos_y <= 480 - img_bat_size_y - bat_speed - img_bat_offset) {
             bat_r_pos_y += bat_speed;
         } 
     }
     if (keysDown[87]) {                  // W
-        if (bat_l_pos_y >= bat_speed) {
+        if (bat_l_pos_y >= bat_speed + img_bat_offset) {
             bat_l_pos_y -= bat_speed;
         }
     }
     if (keysDown[83]) {                  // S
-        if (bat_l_pos_y <= 480 - img_bat_size_y - bat_speed) {
+        if (bat_l_pos_y <= 480 - img_bat_size_y - bat_speed - img_bat_offset) {
             bat_l_pos_y += bat_speed;
         } 
     }
