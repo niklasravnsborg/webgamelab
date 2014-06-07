@@ -1,6 +1,6 @@
 var ctx = document.getElementById("canvas").getContext("2d");
 
-var mode = 1;       // 0 - Menü   1 - Spiel  2 - Game Over
+var mode = 0;       // 0 - Menü   1 - Spiel  2 - Game Over
 
 var keysDown = {};
 
@@ -40,7 +40,22 @@ var player_r_points = 0,
 
 var img_ball, img_ball_ready,
     img_bat, img_bat_ready,
-    img_field, img_field_ready;
+    img_field, img_field_ready,
+    
+    img_b_credits_1, img_b_credits_1_ready,
+    img_b_credits_2, img_b_credits_2_ready,
+    img_b_opt_1, img_b_opt_1_ready,
+    img_b_opt_2, img_b_opt_2_ready,
+    img_b_play_1, img_b_play_1_ready,
+    img_b_play_2, img_b_play_2_ready,
+    img_b_quit_1, img_b_quit_1_ready,
+    img_b_quit_2, img_b_quit_2_ready,
+    img_menue, img_menue_ready;
+
+var over_play = 0,
+    over_credits = 0,
+    over_options = 0,
+    over_quit = 0;
 
 
 function setBallState(val) {
@@ -160,6 +175,47 @@ function moveBats() {
 
 
 
+function mouse_move(event) {
+    var x = event.pageX - document.getElementById("canvas").offsetLeft,
+        y = event.pageY - document.getElementById("canvas").offsetLeft;    
+    
+    if (x >= 40 &&
+        x <= 40 + img_b_play_1.width &&
+        y >= 120 &&
+        y <= 120 + img_b_play_1.height) {
+        over_play = 1;
+    } else {
+        over_play = 0;
+    }
+    
+    if (x >= 40 &&
+        x <= 40 + img_b_play_1.width &&
+        y >= 195 &&
+        y <= 195 + img_b_play_1.height) {
+        over_options = 1;
+    } else {
+        over_options = 0;
+    }
+    
+    if (x >= 40 &&
+        x <= 40 + img_b_play_1.width &&
+        y >= 270 &&
+        y <= 270 + img_b_play_1.height) {
+        over_credits = 1;
+    } else {
+        over_credits = 0;
+    }
+    
+    if (x >= 40 &&
+        x <= 40 + img_b_play_1.width &&
+        y >= 345 &&
+        y <= 345 + img_b_play_1.height) {
+        over_quit = 1;
+    } else {
+        over_quit = 0;
+    }
+}
+
 function addText(text, x, y, color, font, align, base) {
     ctx.fillStyle = color;
     ctx.font = font;
@@ -183,6 +239,73 @@ function eventListener() {
 
 function loadImages() {
     "use strict";
+    
+    //Menue
+    
+    img_b_play_1_ready = false;
+    img_b_play_1 = new Image();
+    img_b_play_1.onload = function () {
+        img_b_play_1_ready = true;
+    };
+    img_b_play_1.src = "images/button_play_1.png";
+    
+    img_menue_ready = false;
+    img_menue = new Image();
+    img_menue.onload = function () {
+        img_menue_ready = true;
+    };
+    img_menue.src = "images/menue.png";
+    
+    img_b_play_2_ready = false;
+    img_b_play_2 = new Image();
+    img_b_play_2.onload = function () {
+        img_b_play_2_ready = true;
+    };
+    img_b_play_2.src = "images/button_play_2.png";
+    
+    img_b_opt_1_ready = false;
+    img_b_opt_1 = new Image();
+    img_b_opt_1.onload = function () {
+        img_b_opt_1_ready = true;
+    };
+    img_b_opt_1.src = "images/button_options_1.png";
+    
+    img_b_opt_2_ready = false;
+    img_b_opt_2 = new Image();
+    img_b_opt_2.onload = function () {
+        img_b_opt_2_ready = true;
+    };
+    img_b_opt_2.src = "images/button_options_2.png";
+    
+    img_b_credits_1_ready = false;
+    img_b_credits_1 = new Image();
+    img_b_credits_1.onload = function () {
+        img_b_credits_1_ready = true;
+    };
+    img_b_credits_1.src = "images/button_credits_1.png";
+    
+    img_b_credits_2_ready = false;
+    img_b_credits_2 = new Image();
+    img_b_credits_2.onload = function () {
+        img_b_credits_2_ready = true;
+    };
+    img_b_credits_2.src = "images/button_credits_2.png";
+    
+    img_b_quit_1_ready = false;
+    img_b_quit_1 = new Image();
+    img_b_quit_1.onload = function () {
+        img_b_quit_1_ready = true;
+    };
+    img_b_quit_1.src = "images/button_quit_1.png";
+    
+    img_b_quit_2_ready = false;
+    img_b_quit_2 = new Image();
+    img_b_quit_2.onload = function () {
+        img_b_quit_2_ready = true;
+    };
+    img_b_quit_2.src = "images/button_quit_2.png";
+    
+    //Game
     
     img_field_ready = false;
     img_field = new Image();
@@ -209,13 +332,15 @@ function loadImages() {
 function logic() {
     "use strict";
     
-    if (keysDown[13]) {                 // Enter
-        ball_ready = 1;
-    }
     
-    moveBats();
     
     if (mode === 1) {
+        
+        if (keysDown[13]) {                 // Enter
+            ball_ready = 1;
+        }
+
+        moveBats();
         
         if (ball_state === 0) {
                    
@@ -236,6 +361,44 @@ function logic() {
 
 function render() {
     "use strict";
+    
+    if (mode === 0) {
+        if (img_menue_ready) {
+            ctx.drawImage(img_menue, 0, 0);
+        } 
+        
+        if (img_b_play_1_ready && img_b_play_2_ready) {
+            if (over_play) {
+                ctx.drawImage(img_b_play_1, 40, 120);
+            } else {
+                ctx.drawImage(img_b_play_2, 40, 120);
+            }
+        }
+        
+        if (img_b_opt_1_ready && img_b_opt_2_ready) {
+            if (over_options) {
+                ctx.drawImage(img_b_opt_1, 40, 195);
+            } else {
+                ctx.drawImage(img_b_opt_2, 40, 195);
+            }
+        }
+        
+        if (img_b_credits_1_ready && img_b_credits_2_ready) {
+            if (over_credits) {
+                ctx.drawImage(img_b_credits_1, 40, 270);
+            } else {
+                ctx.drawImage(img_b_credits_2, 40, 270);
+            }
+        }
+        
+        if (img_b_quit_1_ready && img_b_quit_2_ready) {
+            if (over_quit) {
+                ctx.drawImage(img_b_quit_1, 40, 345);
+            } else {
+                ctx.drawImage(img_b_quit_2, 40, 345);
+            }
+        }
+    }
     
     if (mode === 1) {
         if (img_field_ready) {
