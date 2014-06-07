@@ -1,25 +1,18 @@
-var mode = 0;
-var over_go = 0;
-
-var ghosts = new Array(0);
-
-var all_g = 0;
-var counter = 0;
-var score = 0;
-var wave = 0;
-
-var go_x = 100;
-var go_y = 210;
-
-var m_speed = 1;
+/*global Audio*/
 
 
-function init() {
-    "use strict";
-    var main_can = document.getElementById("main_can");
-    var main_ctx = main_can.getContext("2d");
-    return main_ctx;
-}
+//DEFINE VARIABLES
+var mode = 0,
+    over_go = 0,
+    ghosts = new Array(0),
+    all_g = 0,
+    counter = 0,
+    score = 0,
+    wave = 0,
+    go_x = 100,
+    go_y = 210,
+    m_speed = 1;
+
 
 
 //ASSETS
@@ -89,12 +82,14 @@ ovImage.onload = function () {
 };
 ovImage.src = "assets/gameover.png";
 
-var audio = new Audio("assets/music.mp3");
-audio.loop = true;
+var backgroundmusic = new Audio("assets/music.mp3");
+backgroundmusic.loop = true;
 
 
 
-// GAME
+// Initiate Game
+var ctx = document.getElementById("main_can").getContext("2d");
+
 function changeDirection(ghost) {
     "use strict";
     ghost[2] = Math.round(Math.random() * 3);
@@ -145,6 +140,18 @@ function moveGhosts() {
     }
 }
 
+function addGhosts(number) {
+    "use strict";
+    var i,
+        pos = new Array(2);
+    for (i = 0; i < number; i += 1) {
+        pos[0] = Math.random() * (600 - enImage.width);
+        pos[1] = brettImage.height + Math.random() * (600 - enImage.height - brettImage.height);
+        pos[2] = Math.round(Math.random() * 3);
+        ghosts.push(pos);
+    }
+}
+
 function clickevent(event) {
     "use strict";
     var m_x = event.pageX - document.getElementById("main_can").offsetLeft,
@@ -163,7 +170,7 @@ function clickevent(event) {
             over_go = 0;
             all_g = 0;
             m_speed = 1;
-            audio.play();
+            backgroundmusic.play();
         }
     }
 
@@ -188,10 +195,10 @@ function clickevent(event) {
     }
 }
 
-function over(event) {
+function hoverevent(event) {
     "use strict";
-    var m_x = event.pageX - document.getElementById("main_can").offsetLeft;
-    var m_y = event.pageY - document.getElementById("main_can").offsetTop;
+    var m_x = event.pageX - document.getElementById("main_can").offsetLeft,
+        m_y = event.pageY - document.getElementById("main_can").offsetTop;
 
     if (mode === 0) {
         if (m_x >= go_x && m_x <= go_x + go1Image.width && m_y >= go_y && m_y <= go_y + go1Image.height) {
@@ -210,27 +217,6 @@ function over(event) {
             over_go = 0;
         }
     }
-}
-
-function addGhosts(number) {
-    "use strict";
-    var i;
-    for (i = 0; i < number; i += 1) {
-        var pos = new Array(2);
-        pos[0] = Math.random() * (600 - enImage.width);
-        pos[1] = brettImage.height + Math.random() * (600 - enImage.height - brettImage.height);
-        pos[2] = Math.round(Math.random() * 3);
-        ghosts.push(pos);
-    }
-}
-
-
-
-function loop() {
-    "use strict";
-    logic();
-    render();
-    window.setTimeout(loop, 50);
 }
 
 function logic() {
@@ -267,6 +253,7 @@ function render() {
         }
     }
     if (mode === 1) {
+        var i;
         if (bgReady) {
             ctx.drawImage(bgImage, 0, 0);
         }
@@ -276,7 +263,7 @@ function render() {
         }
 
         if (enReady) {
-            for (var i = 0; i < ghosts.length; i++) {
+            for (i = 0; i < ghosts.length; i += 1) {
                 ctx.drawImage(enImage, ghosts[i][0], ghosts[i][1]);
             }
         }
@@ -329,9 +316,14 @@ function render() {
     }
 }
 
+function loop() {
+    "use strict";
+    logic();
+    render();
+    window.setTimeout(loop, 50);
+}
 
 
-var ctx = init();
 
-//Global_Game_Loop
+//Run Game
 loop();
