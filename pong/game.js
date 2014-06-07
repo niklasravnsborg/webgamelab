@@ -33,6 +33,9 @@ var bat_r_pos_x = 640 - img_bat_size_x - img_bat_offset,
 
 // Player - Variables
 
+var player_r_points = 0,
+    player_l_points = 0;
+
 // Image - Variables
 
 var img_ball, img_ball_ready,
@@ -152,6 +155,14 @@ function moveBats() {
 
 
 
+function addText(text, x, y, color, font, align, base) {
+    ctx.fillStyle = color;
+    ctx.font = font;
+    ctx.textAlign = align;
+    ctx.textBaseline = base;
+    ctx.fillText(text, x, y);
+}
+
 function eventListener() {
     "use strict";
     
@@ -225,6 +236,11 @@ function render() {
         if (img_field_ready) {
             ctx.drawImage(img_field, 0, 0);
         }
+        
+        addText(player_l_points, 150, 30, "#e5f1c9", "100px impact", "right", "top");
+        addText(player_r_points, 640 - 150, 30, "#e5f1c9", "100px impact", "left", "top");
+        
+        
         if (img_ball_ready) {
             ctx.drawImage(img_ball, ball_pos_x, ball_pos_y);
         }
