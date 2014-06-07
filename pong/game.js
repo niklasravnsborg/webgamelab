@@ -116,6 +116,11 @@ function moveBall() {
         ball_ready = 0;
         setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
         setRandDirection();
+        if (col === 0) {
+            player_l_points += 1;    
+        } else {
+            player_r_points += 1;   
+        }
     }
 
     if (col === 1 || col === 3) {
@@ -239,8 +244,7 @@ function render() {
         
         addText(player_l_points, 150, 30, "#e5f1c9", "100px impact", "right", "top");
         addText(player_r_points, 640 - 150, 30, "#e5f1c9", "100px impact", "left", "top");
-        
-        
+                
         if (img_ball_ready) {
             ctx.drawImage(img_ball, ball_pos_x, ball_pos_y);
         }
