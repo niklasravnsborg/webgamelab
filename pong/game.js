@@ -62,12 +62,21 @@ var images_menue_load = [ "menue.png",              // 0
                          "ball_1.png",              // 1
                          "bat_1.png" ];             // 2
 
+var sounds = [];
+
+var sounds_load = [ "pong_1.mp3",   // 0
+                    "click_1.mp3",  // 1
+                    "score_1.mp3",  // 2
+                    "start_1.mp3" ];// 3
+
 var button_pos = [ [40, 120],      //play
                    [40, 195],      //options
                    [40, 270],      //credits
                    [40, 345],      //quit
                    [25, 400],      //back
                    [75, 400] ];    //restart
+
+
 
 var over_play = 0,
     over_credits = 0,
@@ -86,6 +95,7 @@ function setBallState(val) {
         setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
         setRandDirection();
         ball_speed = 1;
+        sounds[2].play();
     }
     
     if (val === 1) {
@@ -167,11 +177,13 @@ function moveBall() {
 
     if (col === 1 || col === 3) {
         ball_di_y = -ball_di_y;
+        sounds[0].play();
     }
     
     if (col === 4 || col === 5) {
         ball_di_x = -ball_di_x;
-        ball_speed += 0.25;
+        ball_speed += 0.35;
+        sounds[0].play();
     }
 }
 
@@ -263,16 +275,20 @@ function mouse_click(event) {
         if (overButton("play", x, y)) {
             mode = 1;
             setBallState(0);
+            sounds[1].play();
         }
         if (overButton("options", x, y)) {
             menue_mode = 1;
+            sounds[1].play();
         }
 
         if (overButton("credits", x, y)) {
             menue_mode = 2;
+            sounds[1].play();
         }
 
         if (overButton("quit", x, y)) {
+            sounds[1].play();
             window.location = "../index.html";
         }
     }
@@ -400,6 +416,14 @@ function loadImages() {
    
 }
 
+function loadSounds() {
+    var i;
+    for (i = 0; i < sounds_load.length; i++) {
+        var sound = new Audio("sounds/" + sounds_load[i]);
+        sounds.push(sound);
+    }
+}
+
 function logic() {
     "use strict";
        
@@ -408,6 +432,7 @@ function logic() {
         
         if (keysDown[13]) {                 // Enter
             setBallState(1);
+            sounds[3].play();
         }
 
         moveBats();
@@ -491,6 +516,7 @@ function loop() {
 }
 
 loadImages();
+loadSounds();
 eventListener();
 setBallState(0);
 loop();
