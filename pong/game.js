@@ -1,9 +1,11 @@
 var ctx = document.getElementById("canvas").getContext("2d");
 
-var mode = 2;       // 0 - Menü   1 - Spiel  2 - Game Over
+var mode = 0;       // 0 - Menü   1 - Spiel  2 - Game Over
 var menue_mode = 0; 
 
 var keysDown = {};
+
+var time = 1000;
 
 // Ball - Variables
 
@@ -431,17 +433,24 @@ function logic() {
     
     if (mode === 1) {
         
+        time -= 1;
+        moveBats();
+        
         if (keysDown[13]) {                 // Enter
             setBallState(1);
             sounds[3].play();
         }
-
-        moveBats();
-        
+           
         if (ball_state === 1) {
             
             moveBall();
         
+        }
+        
+        if (time <= 0) {
+            
+            mode = 2;
+            
         }
         
     }
@@ -487,6 +496,12 @@ function render() {
         
         addText(player_l_points, 150, 30, "#e5f1c9", "100px impact", "right", "top");
         addText(player_r_points, 640 - 150, 30, "#e5f1c9", "100px impact", "left", "top");
+        
+        if (time > 500) {
+            addText(Math.round(time / 100), 150, 445, "#e5f1c9", "40px impact", "left", "bottom");
+        } else {
+            addText(Math.round(time / 100), 150, 455, "#e5f1c9", "60px impact", "left", "bottom");
+        }
                 
         ctx.drawImage(images_game[1], ball_pos_x, ball_pos_y);
 
