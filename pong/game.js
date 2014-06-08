@@ -1,6 +1,6 @@
 var ctx = document.getElementById("canvas").getContext("2d");
 
-var mode = 0;       // 0 - Menü   1 - Spiel  2 - Game Over
+var mode = 1;       // 0 - Menü   1 - Spiel  2 - Game Over
 
 var keysDown = {};
 
@@ -43,19 +43,8 @@ var img_ball, img_ball_ready,
     img_bat, img_bat_ready,
     img_field, img_field_ready;
     
-    /*
-    img_b_credits_1, img_b_credits_1_ready,
-    img_b_credits_2, img_b_credits_2_ready,
-    img_b_opt_1, img_b_opt_1_ready,
-    img_b_opt_2, img_b_opt_2_ready,
-    img_b_play_1, img_b_play_1_ready,
-    img_b_play_2, img_b_play_2_ready,
-    img_b_quit_1, img_b_quit_1_ready,
-    img_b_quit_2, img_b_quit_2_ready,
-    img_menue, img_menue_ready;
-    */
-
 var images_menue,
+    images_game,
     images_menue_load,
     images_game_load;
 
@@ -140,8 +129,10 @@ function moveBall() {
         setRandDirection();
         if (col === 0) {
             player_l_points += 1;
+            ball_speed = 1;
         } else {
             player_r_points += 1;
+            ball_speed = 1;
         }
     }
 
@@ -151,6 +142,7 @@ function moveBall() {
     
     if (col === 4 || col === 5) {
         ball_di_x = -ball_di_x;
+        ball_speed += 0.25;
     }
 }
 
@@ -255,7 +247,9 @@ function eventListener() {
 function loadImages() {
     "use strict";
     
-    images_menue = [];          // [[Picture, ready], [Picture, ready], ... ]
+    images_menue = [];          // [image, image, ... ]
+    images_game = [];
+    
     images_menue_load = [ "menue.png",              // 0
                           "button_play_1.png",      // 1
                           "button_play_2.png",      // 2
@@ -265,9 +259,10 @@ function loadImages() {
                           "button_credits_2.png",   // 6
                           "button_quit_1.png",      // 7
                           "button_quit_2.png" ];    // 8
-    images_game_load = [ "field_1.png",
-                         "ball_1.png",
-                         "bat_1.png" ];
+    
+    images_game_load = [ "field_1.png",             // 0
+                         "ball_1.png",              // 1
+                         "bat_1.png" ];             // 2
                         
     var i;
     for (i = 0; i < images_menue_load.length; i++) {
@@ -276,99 +271,17 @@ function loadImages() {
         images_menue.push(img);
     } 
     
-    /*//Menue
-    
-    img_b_play_1_ready = false;
-    img_b_play_1 = new Image();
-    img_b_play_1.onload = function () {
-        img_b_play_1_ready = true;
-    };
-    img_b_play_1.src = "images/button_play_1.png";
-    
-    img_menue_ready = false;
-    img_menue = new Image();
-    img_menue.onload = function () {
-        img_menue_ready = true;
-    };
-    img_menue.src = "images/menue.png";
-    
-    img_b_play_2_ready = false;
-    img_b_play_2 = new Image();
-    img_b_play_2.onload = function () {
-        img_b_play_2_ready = true;
-    };
-    img_b_play_2.src = "images/button_play_2.png";
-    
-    img_b_opt_1_ready = false;
-    img_b_opt_1 = new Image();
-    img_b_opt_1.onload = function () {
-        img_b_opt_1_ready = true;
-    };
-    img_b_opt_1.src = "images/button_options_1.png";
-    
-    img_b_opt_2_ready = false;
-    img_b_opt_2 = new Image();
-    img_b_opt_2.onload = function () {
-        img_b_opt_2_ready = true;
-    };
-    img_b_opt_2.src = "images/button_options_2.png";
-    
-    img_b_credits_1_ready = false;
-    img_b_credits_1 = new Image();
-    img_b_credits_1.onload = function () {
-        img_b_credits_1_ready = true;
-    };
-    img_b_credits_1.src = "images/button_credits_1.png";
-    
-    img_b_credits_2_ready = false;
-    img_b_credits_2 = new Image();
-    img_b_credits_2.onload = function () {
-        img_b_credits_2_ready = true;
-    };
-    img_b_credits_2.src = "images/button_credits_2.png";
-    
-    img_b_quit_1_ready = false;
-    img_b_quit_1 = new Image();
-    img_b_quit_1.onload = function () {
-        img_b_quit_1_ready = true;
-    };
-    img_b_quit_1.src = "images/button_quit_1.png";
-    
-    img_b_quit_2_ready = false;
-    img_b_quit_2 = new Image();
-    img_b_quit_2.onload = function () {
-        img_b_quit_2_ready = true;
-    };
-    img_b_quit_2.src = "images/button_quit_2.png"; */
-    
-    //Game
-    
-    img_field_ready = false;
-    img_field = new Image();
-    img_field.onload = function () {
-        img_field_ready = true;
-    };
-    img_field.src = "images/field_1.png";
-
-    img_ball_ready = false;
-    img_ball = new Image();
-    img_ball.onload = function () {
-        img_ball_ready = true;
-    };
-    img_ball.src = "images/ball_1.png";
-
-    img_bat_ready = false;
-    img_bat = new Image();
-    img_bat.onload = function () {
-        img_bat_ready = true;
-    };
-    img_bat.src = "images/bat_1.png";
+    for (i = 0; i < images_game_load.length; i++) {
+        var img = new Image();
+        img.src = "images/" + images_game_load[i];
+        images_game.push(img);
+    } 
+   
 }
 
 function logic() {
     "use strict";
-    
-    
+       
     
     if (mode === 1) {
         
@@ -398,12 +311,10 @@ function logic() {
 function render() {
     "use strict";
     
+    
     if (mode === 0) {
         
-
         ctx.drawImage(images_menue[0], 0, 0);
-
-
 
         if (over_play) {
             ctx.drawImage(images_menue[1], 40, 120);
@@ -411,22 +322,17 @@ function render() {
             ctx.drawImage(images_menue[2], 40, 120);
         }
 
-
         if (over_options) {
             ctx.drawImage(images_menue[3], 40, 195);
         } else {
             ctx.drawImage(images_menue[4], 40, 195);
-        }
-
-        
+        }        
 
         if (over_credits) {
             ctx.drawImage(images_menue[5], 40, 270);
         } else {
             ctx.drawImage(images_menue[6], 40, 270);
         }
-
-        
 
         if (over_quit) {
             ctx.drawImage(images_menue[7], 40, 345);
@@ -437,21 +343,17 @@ function render() {
     }
     
     if (mode === 1) {
-        if (img_field_ready) {
-            ctx.drawImage(img_field, 0, 0);
-        }
+
+        ctx.drawImage(images_game[0], 0, 0);
         
         addText(player_l_points, 150, 30, "#e5f1c9", "100px impact", "right", "top");
         addText(player_r_points, 640 - 150, 30, "#e5f1c9", "100px impact", "left", "top");
                 
-        if (img_ball_ready) {
-            ctx.drawImage(img_ball, ball_pos_x, ball_pos_y);
-        }
-        if (img_bat_ready) {
-            ctx.drawImage(img_bat, bat_l_pos_x, bat_l_pos_y);
-            ctx.drawImage(img_bat, bat_r_pos_x, bat_r_pos_y);
-        }
-        
+        ctx.drawImage(images_game[1], ball_pos_x, ball_pos_y);
+
+        ctx.drawImage(images_game[2], bat_l_pos_x, bat_l_pos_y);
+        ctx.drawImage(images_game[2], bat_r_pos_x, bat_r_pos_y);
+              
     }
 }
 
