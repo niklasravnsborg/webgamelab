@@ -491,5 +491,5 @@ function loop() {
 
 loadImages();
 eventListener();
-setRandDirection();
+setBallState(0);
 loop();
