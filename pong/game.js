@@ -20,6 +20,7 @@ var img_ball_size = 20,
     img_ball_offset = 20;
 
 // Bats - Variables
+
 var img_bat_size_x = 20,
     img_bat_size_y = 120,
     img_bat_offset = 25,
@@ -40,8 +41,9 @@ var player_r_points = 0,
 
 var img_ball, img_ball_ready,
     img_bat, img_bat_ready,
-    img_field, img_field_ready,
+    img_field, img_field_ready;
     
+    /*
     img_b_credits_1, img_b_credits_1_ready,
     img_b_credits_2, img_b_credits_2_ready,
     img_b_opt_1, img_b_opt_1_ready,
@@ -51,6 +53,11 @@ var img_ball, img_ball_ready,
     img_b_quit_1, img_b_quit_1_ready,
     img_b_quit_2, img_b_quit_2_ready,
     img_menue, img_menue_ready;
+    */
+
+var images_menue,
+    images_menue_load,
+    images_game_load;
 
 var over_play = 0,
     over_credits = 0,
@@ -87,11 +94,11 @@ function checkCollision() {
     
     // Walls
     
-    if (ball_pos_x - img_ball_size >= 600) {                
+    if (ball_pos_x - img_ball_size >= 600) {
         return 0;       // Wall right
     }
     
-    if (ball_pos_y + img_ball_size + img_ball_offset>= 480) {
+    if (ball_pos_y + img_ball_size + img_ball_offset >= 480) {
         return 1;       // Wall bottom
     }
     
@@ -105,7 +112,7 @@ function checkCollision() {
     
     // Bats
     
-    if (ball_pos_x + img_ball_size >= bat_r_pos_x &&            
+    if (ball_pos_x + img_ball_size >= bat_r_pos_x &&
         ball_pos_y >= bat_r_pos_y &&
         ball_pos_y <= bat_r_pos_y + img_bat_size_y) {
         return 4;       // Bat right
@@ -114,7 +121,7 @@ function checkCollision() {
         ball_pos_y >= bat_l_pos_y &&
         ball_pos_y <= bat_l_pos_y + img_bat_size_y) {
         return 5;       // Bat left
-    } 
+    }
 }
 
 function moveBall() {
@@ -132,9 +139,9 @@ function moveBall() {
         setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
         setRandDirection();
         if (col === 0) {
-            player_l_points += 1;    
+            player_l_points += 1;
         } else {
-            player_r_points += 1;   
+            player_r_points += 1;
         }
     }
 
@@ -143,7 +150,7 @@ function moveBall() {
     }
     
     if (col === 4 || col === 5) {
-        ball_di_x = -ball_di_x;   
+        ball_di_x = -ball_di_x;
     }
 }
 
@@ -159,7 +166,7 @@ function moveBats() {
     if (keysDown[40]) {                  // Runter
         if (bat_r_pos_y <= 480 - img_bat_size_y - bat_speed - img_bat_offset) {
             bat_r_pos_y += bat_speed;
-        } 
+        }
     }
     if (keysDown[87]) {                  // W
         if (bat_l_pos_y >= bat_speed + img_bat_offset) {
@@ -169,54 +176,62 @@ function moveBats() {
     if (keysDown[83]) {                  // S
         if (bat_l_pos_y <= 480 - img_bat_size_y - bat_speed - img_bat_offset) {
             bat_l_pos_y += bat_speed;
-        } 
+        }
     }
 }
 
 
 
 function mouse_move(event) {
+    "use strict";
+    
     var x = event.pageX - document.getElementById("canvas").offsetLeft,
-        y = event.pageY - document.getElementById("canvas").offsetLeft;    
+        y = event.pageY - document.getElementById("canvas").offsetLeft;
     
-    if (x >= 40 &&
-        x <= 40 + img_b_play_1.width &&
-        y >= 120 &&
-        y <= 120 + img_b_play_1.height) {
-        over_play = 1;
-    } else {
-        over_play = 0;
-    }
+    if (mode === 0) {
     
-    if (x >= 40 &&
-        x <= 40 + img_b_play_1.width &&
-        y >= 195 &&
-        y <= 195 + img_b_play_1.height) {
-        over_options = 1;
-    } else {
-        over_options = 0;
-    }
-    
-    if (x >= 40 &&
-        x <= 40 + img_b_play_1.width &&
-        y >= 270 &&
-        y <= 270 + img_b_play_1.height) {
-        over_credits = 1;
-    } else {
-        over_credits = 0;
-    }
-    
-    if (x >= 40 &&
-        x <= 40 + img_b_play_1.width &&
-        y >= 345 &&
-        y <= 345 + img_b_play_1.height) {
-        over_quit = 1;
-    } else {
-        over_quit = 0;
+        if (x >= 40 &&
+            x <= 40 + images_menue[1].width &&
+            y >= 120 &&
+            y <= 120 + images_menue[1].height) {
+            over_play = 1;
+        } else {
+            over_play = 0;
+        }
+
+        if (x >= 40 &&
+            x <= 40 + images_menue[1].width &&
+            y >= 195 &&
+            y <= 195 + images_menue[1].height) {
+            over_options = 1;
+        } else {
+            over_options = 0;
+        }
+
+        if (x >= 40 &&
+            x <= 40 + images_menue[1].width &&
+            y >= 270 &&
+            y <= 270 + images_menue[1].height) {
+            over_credits = 1;
+        } else {
+            over_credits = 0;
+        }
+
+        if (x >= 40 &&
+            x <= 40 + images_menue[1].width &&
+            y >= 345 &&
+            y <= 345 + images_menue[1].height) {
+            over_quit = 1;
+        } else {
+            over_quit = 0;
+        }
+        
     }
 }
 
 function addText(text, x, y, color, font, align, base) {
+    "use strict";
+    
     ctx.fillStyle = color;
     ctx.font = font;
     ctx.textAlign = align;
@@ -240,7 +255,28 @@ function eventListener() {
 function loadImages() {
     "use strict";
     
-    //Menue
+    images_menue = [];          // [[Picture, ready], [Picture, ready], ... ]
+    images_menue_load = [ "menue.png",              // 0
+                          "button_play_1.png",      // 1
+                          "button_play_2.png",      // 2
+                          "button_options_1.png",   // 3
+                          "button_options_2.png",   // 4
+                          "button_credits_1.png",   // 5
+                          "button_credits_2.png",   // 6
+                          "button_quit_1.png",      // 7
+                          "button_quit_2.png" ];    // 8
+    images_game_load = [ "field_1.png",
+                         "ball_1.png",
+                         "bat_1.png" ];
+                        
+    var i;
+    for (i = 0; i < images_menue_load.length; i++) {
+        var img = new Image();
+        img.src = "images/" + images_menue_load[i];
+        images_menue.push(img);
+    } 
+    
+    /*//Menue
     
     img_b_play_1_ready = false;
     img_b_play_1 = new Image();
@@ -303,7 +339,7 @@ function loadImages() {
     img_b_quit_2.onload = function () {
         img_b_quit_2_ready = true;
     };
-    img_b_quit_2.src = "images/button_quit_2.png";
+    img_b_quit_2.src = "images/button_quit_2.png"; */
     
     //Game
     
@@ -363,41 +399,41 @@ function render() {
     "use strict";
     
     if (mode === 0) {
-        if (img_menue_ready) {
-            ctx.drawImage(img_menue, 0, 0);
-        } 
         
-        if (img_b_play_1_ready && img_b_play_2_ready) {
-            if (over_play) {
-                ctx.drawImage(img_b_play_1, 40, 120);
-            } else {
-                ctx.drawImage(img_b_play_2, 40, 120);
-            }
+
+        ctx.drawImage(images_menue[0], 0, 0);
+
+
+
+        if (over_play) {
+            ctx.drawImage(images_menue[1], 40, 120);
+        } else {
+            ctx.drawImage(images_menue[2], 40, 120);
         }
+
+
+        if (over_options) {
+            ctx.drawImage(images_menue[3], 40, 195);
+        } else {
+            ctx.drawImage(images_menue[4], 40, 195);
+        }
+
         
-        if (img_b_opt_1_ready && img_b_opt_2_ready) {
-            if (over_options) {
-                ctx.drawImage(img_b_opt_1, 40, 195);
-            } else {
-                ctx.drawImage(img_b_opt_2, 40, 195);
-            }
+
+        if (over_credits) {
+            ctx.drawImage(images_menue[5], 40, 270);
+        } else {
+            ctx.drawImage(images_menue[6], 40, 270);
         }
+
         
-        if (img_b_credits_1_ready && img_b_credits_2_ready) {
-            if (over_credits) {
-                ctx.drawImage(img_b_credits_1, 40, 270);
-            } else {
-                ctx.drawImage(img_b_credits_2, 40, 270);
-            }
+
+        if (over_quit) {
+            ctx.drawImage(images_menue[7], 40, 345);
+        } else {
+            ctx.drawImage(images_menue[8], 40, 345);
         }
-        
-        if (img_b_quit_1_ready && img_b_quit_2_ready) {
-            if (over_quit) {
-                ctx.drawImage(img_b_quit_1, 40, 345);
-            } else {
-                ctx.drawImage(img_b_quit_2, 40, 345);
-            }
-        }
+
     }
     
     if (mode === 1) {
