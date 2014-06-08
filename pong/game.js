@@ -1,14 +1,14 @@
 var ctx = document.getElementById("canvas").getContext("2d");
 
 var mode = 0;       // 0 - Menü   1 - Spiel  2 - Game Over
-var menue_mode = 0;
+var menue_mode = 0; 
 
 var keysDown = {};
 
 // Ball - Variables
 
 var ball_state = 0, // 0 - still  1 - in Spiel
-    ball_ready = 0;
+    ball_ready = 0; // 0 - still  1
 
 var ball_pos_x = 310,
     ball_pos_y = 220,
@@ -80,7 +80,18 @@ var over_play = 0,
 function setBallState(val) {
     "use strict";
     
-    ball_state = val;
+    if (val === 0) {
+        ball_state = 0;
+        ball_ready = 0;
+        setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
+        setRandDirection();
+        ball_speed = 1;
+    }
+    
+    if (val === 1) {
+        ball_state = 1;   
+    }
+
 }
 
 function setBallPosition(x, y) {
@@ -147,15 +158,10 @@ function moveBall() {
 
     if (col === 0 || col === 2) {
         setBallState(0);
-        ball_ready = 0;
-        setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
-        setRandDirection();
         if (col === 0) {
             player_l_points += 1;
-            ball_speed = 1;
         } else {
             player_r_points += 1;
-            ball_speed = 1;
         }
     }
 
@@ -275,7 +281,9 @@ function mouse_click(event) {
             mode = 0;
         }
         if (overButton("restart", x, y)) {
-            mode = 1;
+            setBallState(0);
+            player_l_points = 0;
+            player_r_points = 0;
         }
     }
 }
@@ -398,18 +406,10 @@ function logic() {
     if (mode === 1) {
         
         if (keysDown[13]) {                 // Enter
-            ball_ready = 1;
+            setBallState(1);
         }
 
         moveBats();
-        
-        if (ball_state === 0) {
-                   
-            if (ball_ready) {
-                setBallState(1);
-            }
-            
-        }
         
         if (ball_state === 1) {
             
