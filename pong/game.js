@@ -262,6 +262,7 @@ function mouse_click(event) {
     if (mode === 0) {
         if (overButton("play", x, y)) {
             mode = 1;
+            setBallState(0);
         }
         if (overButton("options", x, y)) {
             menue_mode = 1;
