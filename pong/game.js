@@ -221,7 +221,7 @@ function mouse_move(event) {
     "use strict";
     
     var x = event.pageX - document.getElementById("canvas").offsetLeft,
-        y = event.pageY - document.getElementById("canvas").offsetLeft;
+        y = event.pageY - document.getElementById("canvas").offsetTop;
     
     if (mode === 0) {
     
@@ -272,7 +272,7 @@ function mouse_click(event) {
     "use strict";
     
     var x = event.pageX - document.getElementById("canvas").offsetLeft,
-        y = event.pageY - document.getElementById("canvas").offsetLeft;
+        y = event.pageY - document.getElementById("canvas").offsetTop;
     
     if (mode === 0) {
         if (overButton("play", x, y)) {
@@ -316,6 +316,7 @@ function overButton(button, x, y) {
             x <= button_pos[0][0] + images_menu[1].width &&
             y >= button_pos[0][1] &&
             y <= button_pos[0][1] + images_menu[1].height) {
+            
             return 1;
         } else {
             return 0;
@@ -545,6 +546,7 @@ function render() {
         }
         
         addText(player_l_points + " : " + player_r_points, 320, 180, "white", "80px impact", "center", "top");
+        
     }
 }
 
