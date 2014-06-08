@@ -40,24 +40,41 @@ var player_r_points = 0,
 
 // Image - Variables
 
-var img_ball, img_ball_ready,
-    img_bat, img_bat_ready,
-    img_field, img_field_ready;
     
-var images_menue,
-    images_game,
-    images_menue_load,
-    images_game_load;
+var images_menue = [],
+    images_game = [];
 
-var button_pos = [[40, 120],      //play
-                  [40, 195],      //options
-                  [40, 270],      //credits
-                  [40, 345]];     //quit
+var images_menue_load = [ "menue.png",              // 0
+                          "button_play_1.png",      // 1
+                          "button_play_2.png",      // 2
+                          "button_options_1.png",   // 3
+                          "button_options_2.png",   // 4
+                          "button_credits_1.png",   // 5
+                          "button_credits_2.png",   // 6
+                          "button_quit_1.png",      // 7
+                          "button_quit_2.png",      // 8
+                          "button_back_1.png",      // 9
+                          "button_back_2.png",      // 10
+                          "button_restart_1.png",   // 11
+                          "button_restart_2.png" ], // 12
+
+    images_game_load = [ "field_1.png",             // 0
+                         "ball_1.png",              // 1
+                         "bat_1.png" ];             // 2
+
+var button_pos = [ [40, 120],      //play
+                   [40, 195],      //options
+                   [40, 270],      //credits
+                   [40, 345],      //quit
+                   [25, 400],      //back
+                   [75, 400] ];    //restart
 
 var over_play = 0,
     over_credits = 0,
     over_options = 0,
-    over_quit = 0;
+    over_quit = 0,
+    over_back = 0,
+    over_restart = 0;
 
 
 function setBallState(val) {
@@ -210,6 +227,22 @@ function mouse_move(event) {
         } else {
             over_quit = 0;
         }
+    
+    }
+    
+    if (mode === 1) {
+        
+        if (overButton("back", x, y)) {
+            over_back = 1;
+        } else {
+            over_back = 0;
+        }
+        
+        if (overButton("restart", x, y)) {
+            over_restart = 1;
+        } else {
+            over_restart = 0;
+        }
         
     }
 }
@@ -218,33 +251,44 @@ function mouse_click(event) {
     "use strict";
     
     var x = event.pageX - document.getElementById("canvas").offsetLeft,
-        y = event.pageY - document.getElementById("canvas").offsetLeft;   
+        y = event.pageY - document.getElementById("canvas").offsetLeft;
     
     if (mode === 0) {
         if (overButton("play", x, y)) {
             mode = 1;
-        } 
+        }
         if (overButton("options", x, y)) {
             menue_mode = 1;
-        } 
+        }
 
         if (overButton("credits", x, y)) {
             menue_mode = 2;
-        } 
+        }
 
         if (overButton("quit", x, y)) {
             window.location = "../index.html";
-        } 
+        }
+    }
+    
+    if (mode === 1) {
+        if (overButton("back", x, y)) {
+            mode = 0;
+        }
+        if (overButton("restart", x, y)) {
+            mode = 1;
+        }
     }
 }
 
 function overButton(button, x, y) {
+    "use strict";
+    
     if (button === "play") {
         if (x >= button_pos[0][0] &&
             x <= button_pos[0][0] + images_menue[1].width &&
             y >= button_pos[0][1] &&
             y <= button_pos[0][1] + images_menue[1].height) {
-            return 1;   
+            return 1;
         } else {
             return 0;
         }
@@ -255,7 +299,7 @@ function overButton(button, x, y) {
             x <= button_pos[1][0] + images_menue[1].width &&
             y >= button_pos[1][1] &&
             y <= button_pos[1][1] + images_menue[1].height) {
-            return 1;   
+            return 1;
         } else {
             return 0;
         }
@@ -277,7 +321,29 @@ function overButton(button, x, y) {
             x <= button_pos[3][0] + images_menue[1].width &&
             y >= button_pos[3][1] &&
             y <= button_pos[3][1] + images_menue[1].height) {
-            return 1;   
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    if (button === "back") {
+        if (x >= button_pos[4][0] &&
+            x <= button_pos[4][0] + images_menue[9].width &&
+            y >= button_pos[4][1] &&
+            y <= button_pos[4][1] + images_menue[9].height) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    if (button === "restart") {
+        if (x >= button_pos[5][0] &&
+            x <= button_pos[5][0] + images_menue[9].width &&
+            y >= button_pos[5][1] &&
+            y <= button_pos[5][1] + images_menue[9].height) {
+            return 1;
         } else {
             return 0;
         }
@@ -309,36 +375,19 @@ function eventListener() {
 
 function loadImages() {
     "use strict";
-    
-    images_menue = [];          // [image, image, ... ]
-    images_game = [];
-    
-    images_menue_load = [ "menue.png",              // 0
-                          "button_play_1.png",      // 1
-                          "button_play_2.png",      // 2
-                          "button_options_1.png",   // 3
-                          "button_options_2.png",   // 4
-                          "button_credits_1.png",   // 5
-                          "button_credits_2.png",   // 6
-                          "button_quit_1.png",      // 7
-                          "button_quit_2.png" ];    // 8
-    
-    images_game_load = [ "field_1.png",             // 0
-                         "ball_1.png",              // 1
-                         "bat_1.png" ];             // 2
                         
     var i;
     for (i = 0; i < images_menue_load.length; i++) {
         var img = new Image();
         img.src = "images/" + images_menue_load[i];
         images_menue.push(img);
-    } 
+    }
     
     for (i = 0; i < images_game_load.length; i++) {
-        var img = new Image();
+        img = new Image();
         img.src = "images/" + images_game_load[i];
         images_game.push(img);
-    } 
+    }
    
 }
 
@@ -364,7 +413,7 @@ function logic() {
         
         if (ball_state === 1) {
             
-            moveBall(); 
+            moveBall();
         
         }
         
@@ -389,7 +438,7 @@ function render() {
             ctx.drawImage(images_menue[3], button_pos[1][0], button_pos[1][1]);
         } else {
             ctx.drawImage(images_menue[4], 40, 195);
-        }        
+        }
 
         if (over_credits) {
             ctx.drawImage(images_menue[5], button_pos[2][0], button_pos[2][1]);
@@ -416,6 +465,18 @@ function render() {
 
         ctx.drawImage(images_game[2], bat_l_pos_x, bat_l_pos_y);
         ctx.drawImage(images_game[2], bat_r_pos_x, bat_r_pos_y);
+        
+        if (over_back) {
+            ctx.drawImage(images_menue[9], button_pos[4][0], button_pos[4][1]);
+        } else {
+            ctx.drawImage(images_menue[10], button_pos[4][0], button_pos[4][1]);
+        }
+        
+        if (over_restart) {
+            ctx.drawImage(images_menue[11], button_pos[5][0], button_pos[5][1]);
+        } else {
+            ctx.drawImage(images_menue[12], button_pos[5][0], button_pos[5][1]);
+        }
               
     }
 }
