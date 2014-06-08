@@ -1,6 +1,6 @@
 var ctx = document.getElementById("canvas").getContext("2d");
 
-var mode = 0;       // 0 - Menü   1 - Spiel  2 - Game Over
+var mode = 2;       // 0 - Menü   1 - Spiel  2 - Game Over
 var menue_mode = 0; 
 
 var keysDown = {};
@@ -60,7 +60,8 @@ var images_menue_load = [ "menue.png",              // 0
 
     images_game_load = [ "field_1.png",             // 0
                          "ball_1.png",              // 1
-                         "bat_1.png" ];             // 2
+                         "bat_1.png",               // 2
+                         "game_over_1.png" ];       // 3
 
 var sounds = [];
 
@@ -504,6 +505,31 @@ function render() {
             ctx.drawImage(images_menue[12], button_pos[5][0], button_pos[5][1]);
         }
               
+    }
+    
+    if (mode === 2) {
+        
+        ctx.drawImage(images_game[3], 0, 0);
+        
+        if (player_l_points > player_r_points) {
+            
+            addText("Left player won!", 320, 30, "white", "80px impact", "center", "top");
+        
+        } 
+        
+        if (player_l_points < player_r_points) {
+            
+            addText("Right player won!", 320, 30, "white", "80px impact", "center", "top");
+            
+        }
+        
+        if (player_l_points === player_r_points) {
+            
+            addText("Draw!", 320, 30, "white", "80px impact", "center", "top");   
+            
+        }
+        
+        addText(player_l_points + " : " + player_r_points, 320, 180, "white", "80px impact", "center", "top");
     }
 }
 
