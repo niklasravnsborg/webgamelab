@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #cae589;
+    font-family: sans-serif;
+    color: white;
+}
+
+#canvas {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    margin-top: -240px;
+    margin-left: -320px;
+}
+
+footer {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    
+    font-size: 1.2em;    
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 .5px 2px #4e5835;
+}
