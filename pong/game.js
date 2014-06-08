@@ -1,6 +1,7 @@
 var ctx = document.getElementById("canvas").getContext("2d");
 
-var mode = 1;       // 0 - Menü   1 - Spiel  2 - Game Over
+var mode = 0;       // 0 - Menü   1 - Spiel  2 - Game Over
+var menue_mode = 0;
 
 var keysDown = {};
 
@@ -47,6 +48,11 @@ var images_menue,
     images_game,
     images_menue_load,
     images_game_load;
+
+var button_pos = [[40, 120],      //play
+                  [40, 195],      //options
+                  [40, 270],      //credits
+                  [40, 345]];     //quit
 
 var over_play = 0,
     over_credits = 0,
@@ -181,42 +187,100 @@ function mouse_move(event) {
     
     if (mode === 0) {
     
-        if (x >= 40 &&
-            x <= 40 + images_menue[1].width &&
-            y >= 120 &&
-            y <= 120 + images_menue[1].height) {
+        if (overButton("play", x, y)) {
             over_play = 1;
         } else {
             over_play = 0;
         }
 
-        if (x >= 40 &&
-            x <= 40 + images_menue[1].width &&
-            y >= 195 &&
-            y <= 195 + images_menue[1].height) {
+        if (overButton("options", x, y)) {
             over_options = 1;
         } else {
             over_options = 0;
         }
 
-        if (x >= 40 &&
-            x <= 40 + images_menue[1].width &&
-            y >= 270 &&
-            y <= 270 + images_menue[1].height) {
+        if (overButton("credits", x, y)) {
             over_credits = 1;
         } else {
             over_credits = 0;
         }
 
-        if (x >= 40 &&
-            x <= 40 + images_menue[1].width &&
-            y >= 345 &&
-            y <= 345 + images_menue[1].height) {
+        if (overButton("quit", x, y)) {
             over_quit = 1;
         } else {
             over_quit = 0;
         }
         
+    }
+}
+
+function mouse_click(event) {
+    "use strict";
+    
+    var x = event.pageX - document.getElementById("canvas").offsetLeft,
+        y = event.pageY - document.getElementById("canvas").offsetLeft;   
+    
+    if (mode === 0) {
+        if (overButton("play", x, y)) {
+            mode = 1;
+        } 
+        if (overButton("options", x, y)) {
+            menue_mode = 1;
+        } 
+
+        if (overButton("credits", x, y)) {
+            menue_mode = 2;
+        } 
+
+        if (overButton("quit", x, y)) {
+            window.location = "../index.html";
+        } 
+    }
+}
+
+function overButton(button, x, y) {
+    if (button === "play") {
+        if (x >= button_pos[0][0] &&
+            x <= button_pos[0][0] + images_menue[1].width &&
+            y >= button_pos[0][1] &&
+            y <= button_pos[0][1] + images_menue[1].height) {
+            return 1;   
+        } else {
+            return 0;
+        }
+    }
+    
+    if (button === "options") {
+        if (x >= button_pos[1][0] &&
+            x <= button_pos[1][0] + images_menue[1].width &&
+            y >= button_pos[1][1] &&
+            y <= button_pos[1][1] + images_menue[1].height) {
+            return 1;   
+        } else {
+            return 0;
+        }
+    }
+    
+    if (button === "credits") {
+        if (x >= button_pos[2][0] &&
+            x <= button_pos[2][0] + images_menue[1].width &&
+            y >= button_pos[2][1] &&
+            y <= button_pos[2][1] + images_menue[1].height) {
+            return 1;   
+        } else {
+            return 0;
+        }
+    }
+    
+    if (button === "quit") {
+        if (x >= button_pos[3][0] &&
+            x <= button_pos[3][0] + images_menue[1].width &&
+            y >= button_pos[3][1] &&
+            y <= button_pos[3][1] + images_menue[1].height) {
+            return 1;   
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -316,25 +380,25 @@ function render() {
         ctx.drawImage(images_menue[0], 0, 0);
 
         if (over_play) {
-            ctx.drawImage(images_menue[1], 40, 120);
+            ctx.drawImage(images_menue[1], button_pos[0][0], button_pos[0][1]);
         } else {
             ctx.drawImage(images_menue[2], 40, 120);
         }
 
         if (over_options) {
-            ctx.drawImage(images_menue[3], 40, 195);
+            ctx.drawImage(images_menue[3], button_pos[1][0], button_pos[1][1]);
         } else {
             ctx.drawImage(images_menue[4], 40, 195);
         }        
 
         if (over_credits) {
-            ctx.drawImage(images_menue[5], 40, 270);
+            ctx.drawImage(images_menue[5], button_pos[2][0], button_pos[2][1]);
         } else {
             ctx.drawImage(images_menue[6], 40, 270);
         }
 
         if (over_quit) {
-            ctx.drawImage(images_menue[7], 40, 345);
+            ctx.drawImage(images_menue[7], button_pos[3][0], button_pos[3][1]);
         } else {
             ctx.drawImage(images_menue[8], 40, 345);
         }
