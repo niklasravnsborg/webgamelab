@@ -173,7 +173,6 @@ function moveBats() {
 }
 
 
-
 function mouse_move(event) {
     "use strict";
     
