@@ -104,6 +104,7 @@ function autoChange() {
 function moveGhosts() {
     "use strict";
     var i;
+	
     for (i = 0; i < ghosts.length; i += 1) {
 
         if (ghosts[i][2] === 0) {
@@ -143,8 +144,9 @@ function moveGhosts() {
 function addGhosts(number) {
     "use strict";
     var i,
-        pos = new Array(2);
+		pos;
     for (i = 0; i < number; i += 1) {
+		pos = [];
         pos[0] = Math.random() * (600 - enImage.width);
         pos[1] = brettImage.height + Math.random() * (600 - enImage.height - brettImage.height);
         pos[2] = Math.round(Math.random() * 3);
