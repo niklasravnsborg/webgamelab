@@ -5,7 +5,7 @@ var	// Defining a lot of variables
 
 	// General - Functions
 	ctx = document.getElementById("canvas").getContext("2d"),
-	mode = 0, // 0 - Menü   1 - Spiel  2 - Game Over
+	mode = 0, // 0: game | 1: Endscreen
 	menu_mode = 0,
 	keysDown = {},
 	time = 1000,
@@ -303,35 +303,7 @@ function mouse_move(event) {
 		y = event.pageY - document.getElementById("canvas").offsetTop;
 
 	if (mode === 0) {
-
-		if (overButton("play", x, y)) {
-			over_play = 1;
-		} else {
-			over_play = 0;
-		}
-
-		if (overButton("options", x, y)) {
-			over_options = 1;
-		} else {
-			over_options = 0;
-		}
-
-		if (overButton("credits", x, y)) {
-			over_credits = 1;
-		} else {
-			over_credits = 0;
-		}
-
-		if (overButton("quit", x, y)) {
-			over_quit = 1;
-		} else {
-			over_quit = 0;
-		}
-
-	}
-
-	if (mode === 1) {
-
+		
 		if (overButton("back", x, y)) {
 			over_back = 1;
 		} else {
@@ -343,7 +315,6 @@ function mouse_move(event) {
 		} else {
 			over_restart = 0;
 		}
-
 	}
 }
 
@@ -354,30 +325,8 @@ function mouse_click(event) {
 		y = event.pageY - document.getElementById("canvas").offsetTop;
 
 	if (mode === 0) {
-		if (overButton("play", x, y)) {
-			mode = 1;
-			setBallState(0);
-			sounds[1].play();
-		}
-		if (overButton("options", x, y)) {
-			menu_mode = 1;
-			sounds[1].play();
-		}
-
-		if (overButton("credits", x, y)) {
-			menu_mode = 2;
-			sounds[1].play();
-		}
-
-		if (overButton("quit", x, y)) {
-			sounds[1].play();
-			window.location = "../index.html";
-		}
-	}
-
-	if (mode === 1) {
 		if (overButton("back", x, y)) {
-			mode = 0;
+			window.location = "../index.html";
 		}
 		if (overButton("restart", x, y)) {
 			setBallState(0);
@@ -442,7 +391,7 @@ function loadSounds() {
 function logic() {
 	"use strict";
 	
-	if (mode === 1) {
+	if (mode === 0) {
 		time -= 1;
 		moveBats();
 
@@ -456,7 +405,7 @@ function logic() {
 		}
 
 		if (time <= 0) {
-			mode = 2;
+			mode = 1;
 		}
 	}
 }
@@ -464,35 +413,7 @@ function logic() {
 function render() {
 	"use strict";
 	
-	if (mode === 0) { // Menu
-		ctx.drawImage(images_menu[0], 0, 0);
-
-		if (over_play) {
-			ctx.drawImage(images_menu[1], button_pos[0][0], button_pos[0][1]);
-		} else {
-			ctx.drawImage(images_menu[2], 40, 120);
-		}
-
-		if (over_options) {
-			ctx.drawImage(images_menu[3], button_pos[1][0], button_pos[1][1]);
-		} else {
-			ctx.drawImage(images_menu[4], 40, 195);
-		}
-
-		if (over_credits) {
-			ctx.drawImage(images_menu[5], button_pos[2][0], button_pos[2][1]);
-		} else {
-			ctx.drawImage(images_menu[6], 40, 270);
-		}
-
-		if (over_quit) {
-			ctx.drawImage(images_menu[7], button_pos[3][0], button_pos[3][1]);
-		} else {
-			ctx.drawImage(images_menu[8], 40, 345);
-		}
-	}
-
-	if (mode === 1) { // Game
+	if (mode === 0) { // Game
 		ctx.drawImage(images_game[0], 0, 0);
 
 		addText(player_l_points, 150, 30, "#e5f1c9", "100px impact", "right", "top");
@@ -522,7 +443,7 @@ function render() {
 		}
 	}
 
-	if (mode === 2) { // Endsrceen
+	if (mode === 1) { // Endsrceen
 		ctx.drawImage(images_game[3], 0, 0);
 
 		if (player_l_points > player_r_points) {
