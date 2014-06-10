@@ -195,23 +195,6 @@ function mouse_move(event) {
 		y = event.pageY - document.getElementById("canvas").offsetTop;
 }
 
-function mouse_click(event) {
-	"use strict";
-	
-	var x = event.pageX - document.getElementById("canvas").offsetLeft,
-		y = event.pageY - document.getElementById("canvas").offsetTop;
-
-	/*if (overButton("back", x, y)) {
-		window.location = "../index.html";
-	}
-
-	if (overButton("restart", x, y)) {
-		setBallState(0);
-		player_l_points = 0;
-		player_r_points = 0;
-	}*/
-}
-
 function addText(text, x, y, color, font, align, base) {
 	"use strict";
 	
@@ -327,6 +310,25 @@ function loop() {
 	render();
 	window.setTimeout(loop, 10);
 }
+
+$("#back").click(function () {
+    "use strict";
+	window.location = "../index.html";
+});
+
+$("#restart").click(function () {
+    "use strict";
+    
+    mode = 0;
+    
+    setBallState(0); //Reset Ball
+    
+    //Reset Ponts
+    player_l_points = 0;
+    player_r_points = 0;
+    
+    time = 1000; //Restart Time
+});
 
 loadImages();
 loadSounds();

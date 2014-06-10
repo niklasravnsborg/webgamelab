@@ -4,14 +4,19 @@
         <meta charset="utf-8">
         <title>Pong</title>
         <link rel="stylesheet" href="style.css">
-        
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-        
     </head>
     <body>
-        <canvas id="canvas" onmousemove="mouse_move(event)" onclick="mouse_click(event)" width="640" height="480"></canvas>  
-		<footer>2014 | By Richard Keil and Niklas Ravnsborg-Gjertsen</footer>
-   		<script src="game.js"></script>
+        <div id="game">
+            <canvas id="canvas" onmousemove="mouse_move(event)" onclick="mouse_click(event)" width="640" height="480"></canvas>  
+            <div id="controls">
+                <button id="back">Back</button>
+                <button id="restart">Restart</button>
+            </div>
+        </div>
+        <footer>2014 | By Richard Keil and Niklas Ravnsborg-Gjertsen</footer>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script src="game.js"></script>
     </body>
 </html>

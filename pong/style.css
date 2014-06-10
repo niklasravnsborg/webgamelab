@@ -13,12 +13,29 @@ body {
     color: white;
 }
 
-#canvas {
+#game {
     position: absolute;
     top: 45%;
     left: 50%;
     margin-top: -240px;
     margin-left: -320px;
+}
+
+#controls {
+    text-align: center;
+}
+
+button {
+    border: 3px solid white;
+    border-radius: 3px;
+    padding: 5px 10px;;
+    
+    font-weight: bold;
+    font-size: 1.1em;
+    
+    background: none;
+    color: white;
+    outline: none;
 }
 
 footer {
