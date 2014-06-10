@@ -8,14 +8,14 @@ var	// Defining a lot of variables
 	mode = 0, // 0: game | 1: Endscreen
 	menu_mode = 0,
 	keysDown = {},
-	time = 1000,
+	time = 12000,
 
 
 	// Ball - Variables
 	ball_state = 0, // 0 - still  1 - in Spiel
 	ball_pos_x = 310,
 	ball_pos_y = 220,
-	ball_speed = 4,
+	ball_speed = 1,
 	ball_di_x = 0,
 	ball_di_y = 0,
 	img_ball_size = 20,
@@ -88,7 +88,7 @@ function setBallState(val) {
 		ball_state = 0;
 		setBallPosition((640 / 2) - (img_ball_size / 2), (480 / 2) - (img_ball_size / 2));
 		setRandDirection();
-		ball_speed = 1;
+		ball_speed = 2;
 		sounds[2].play();
 	}
 
