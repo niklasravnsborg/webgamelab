@@ -41,23 +41,7 @@ var	// Defining a lot of variables
 
 
 	// Image - Variables    
-	images_menu = [],
 	images_game = [],
-	images_menu_load = [
-		"menu.png",					// 0
-		"button_play_1.png",		// 1
-		"button_play_2.png",		// 2
-		"button_options_1.png",		// 3
-		"button_options_2.png",		// 4
-		"button_credits_1.png",		// 5
-		"button_credits_2.png",		// 6
-		"button_quit_1.png",		// 7
-		"button_quit_2.png",		// 8
-		"button_back_1.png",		// 9
-		"button_back_2.png",		// 10
-		"button_restart_1.png",		// 11
-		"button_restart_2.png"		// 12
-	],    
 
 	images_game_load = [
 		"field_1.png",				// 0
@@ -74,26 +58,7 @@ var	// Defining a lot of variables
 		"click_1.mp3",				// 1
 		"score_1.mp3",				// 2
 		"start_1.mp3"				// 3
-	],              
-
-
-	// Button Positiones
-	button_pos = [
-		[40, 120],					//play
-		[40, 195],					//options
-		[40, 270],					//credits
-		[40, 345],					//quit
-		[25, 400],					//back
-		[75, 400]					//restart
-	], 
-
-
-	over_play = 0,
-	over_credits = 0,
-	over_options = 0,
-	over_quit = 0,
-	over_back = 0,
-	over_restart = 0;
+	];     
 
 
 
@@ -222,100 +187,12 @@ function moveBats() {
 	}
 }
 
-
-
 // Engine Functions
-function overButton(button, x, y) {
-	"use strict";
-	
-	if (button === "play") {
-		if (x >= button_pos[0][0] &&
-			x <= button_pos[0][0] + images_menu[1].width &&
-			y >= button_pos[0][1] &&
-			y <= button_pos[0][1] + images_menu[1].height) {
-
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	if (button === "options") {
-		if (x >= button_pos[1][0] &&
-			x <= button_pos[1][0] + images_menu[1].width &&
-			y >= button_pos[1][1] &&
-			y <= button_pos[1][1] + images_menu[1].height) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	if (button === "credits") {
-		if (x >= button_pos[2][0] &&
-			x <= button_pos[2][0] + images_menu[1].width &&
-			y >= button_pos[2][1] &&
-			y <= button_pos[2][1] + images_menu[1].height) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	if (button === "quit") {
-		if (x >= button_pos[3][0] &&
-			x <= button_pos[3][0] + images_menu[1].width &&
-			y >= button_pos[3][1] &&
-			y <= button_pos[3][1] + images_menu[1].height) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	if (button === "back") {
-		if (x >= button_pos[4][0] &&
-			x <= button_pos[4][0] + images_menu[9].width &&
-			y >= button_pos[4][1] &&
-			y <= button_pos[4][1] + images_menu[9].height) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	if (button === "restart") {
-		if (x >= button_pos[5][0] &&
-			x <= button_pos[5][0] + images_menu[9].width &&
-			y >= button_pos[5][1] &&
-			y <= button_pos[5][1] + images_menu[9].height) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-}
-
 function mouse_move(event) {
 	"use strict";
 	
 	var x = event.pageX - document.getElementById("canvas").offsetLeft,
 		y = event.pageY - document.getElementById("canvas").offsetTop;
-
-	if (mode === 0) {
-		
-		if (overButton("back", x, y)) {
-			over_back = 1;
-		} else {
-			over_back = 0;
-		}
-
-		if (overButton("restart", x, y)) {
-			over_restart = 1;
-		} else {
-			over_restart = 0;
-		}
-	}
 }
 
 function mouse_click(event) {
@@ -324,16 +201,15 @@ function mouse_click(event) {
 	var x = event.pageX - document.getElementById("canvas").offsetLeft,
 		y = event.pageY - document.getElementById("canvas").offsetTop;
 
-	if (mode === 0) {
-		if (overButton("back", x, y)) {
-			window.location = "../index.html";
-		}
-		if (overButton("restart", x, y)) {
-			setBallState(0);
-			player_l_points = 0;
-			player_r_points = 0;
-		}
+	/*if (overButton("back", x, y)) {
+		window.location = "../index.html";
 	}
+
+	if (overButton("restart", x, y)) {
+		setBallState(0);
+		player_l_points = 0;
+		player_r_points = 0;
+	}*/
 }
 
 function addText(text, x, y, color, font, align, base) {
@@ -363,12 +239,6 @@ function loadImages() {
 	"use strict";
 	
 	var i, img;
-	
-	for (i = 0; i < images_menu_load.length; i += 1) {
-		img = new Image();
-		img.src = "images/" + images_menu_load[i];
-		images_menu.push(img);
-	}
 
 	for (i = 0; i < images_game_load.length; i += 1) {
 		img = new Image();
@@ -428,19 +298,7 @@ function render() {
 		ctx.drawImage(images_game[1], ball_pos_x, ball_pos_y);
 
 		ctx.drawImage(images_game[2], bat_l_pos_x, bat_l_pos_y);
-		ctx.drawImage(images_game[2], bat_r_pos_x, bat_r_pos_y);
-
-		if (over_back) {
-			ctx.drawImage(images_menu[9], button_pos[4][0], button_pos[4][1]);
-		} else {
-			ctx.drawImage(images_menu[10], button_pos[4][0], button_pos[4][1]);
-		}
-
-		if (over_restart) {
-			ctx.drawImage(images_menu[11], button_pos[5][0], button_pos[5][1]);
-		} else {
-			ctx.drawImage(images_menu[12], button_pos[5][0], button_pos[5][1]);
-		}
+		ctx.drawImage(images_game[2], bat_r_pos_x, bat_r_pos_y);		
 	}
 
 	if (mode === 1) { // Endsrceen
