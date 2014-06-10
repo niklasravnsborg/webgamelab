@@ -272,11 +272,13 @@ function render() {
 		addText(player_l_points, 150, 30, "#e5f1c9", "100px impact", "right", "top");
 		addText(player_r_points, 640 - 150, 30, "#e5f1c9", "100px impact", "left", "top");
 
-		if (time > 500) {
+/*		if (time > 500) {
 			addText(Math.round(time / 100), 150, 445, "#e5f1c9", "40px impact", "left", "bottom");
 		} else {
 			addText(Math.round(time / 100), 150, 455, "#e5f1c9", "60px impact", "left", "bottom");
-		}
+		}*/
+		
+		document.getElementById("time").innerHTML = Math.round(time / 100);
 
 		ctx.drawImage(images_game[1], ball_pos_x, ball_pos_y);
 

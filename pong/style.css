@@ -25,6 +25,11 @@ body {
     text-align: center;
 }
 
+#time {
+    text-align: center;
+	font-size: 1.7em;
+}
+
 button {
     border: 3px solid white;
     border-radius: 3px;
@@ -37,6 +42,8 @@ button {
     color: white;
     outline: none;
 }
+
+
 
 footer {
     position: absolute;
