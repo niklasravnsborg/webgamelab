@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: black;
+    font-family: sans-serif;
+}
+
+#game {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -400px;
+    height: 400px;
+    width: 800px;
+    
+    box-shadow: 0px 0px 30px 5px #000000;
+}
+
+#border {
+    position: absolute;
+    content: url("images/border_1.png");
+    top: 45%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -500px;
+}
+
+
+footer {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    
+    font-size: 0.8em;    
+    text-align: center;
+    color: #404040;
+    
+    text-shadow: 0px 0px 4px #000000;
+    
+    
+}
