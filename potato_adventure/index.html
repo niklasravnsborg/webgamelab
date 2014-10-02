@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title> Potato Adventure</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div id="border"></div>
+        <div id="game">
+                <canvas id="canvas" 
+                        width="800" 
+                        height="400"  
+                        onmousemove="checkMouseOver(event)"
+                        onclick="checkMouseClick(event)"
+                        style="background: black;"></canvas>
+        </div>
+        <footer>&copy; Richard Keil 2014 - All rights reserved </footer>
+        
+		<script src="game.js"></script>
+    </body>
+</html>
